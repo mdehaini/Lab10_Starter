@@ -21,6 +21,7 @@
     <nav>
       <a href="speechSynth.html" title="Go to speech synthesizer">Speech Synthesizer</a>
     </nav>
+    <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
   </header>
   <main>
     <section id="expose">
@@ -42,6 +43,32 @@
       <audio class="hidden" src=""></audio>
     </section>
   </main>
+  <script>
+  var user = {
+    firstName: 'Bob',
+    lastName: 'Loblaw',
+    key: 'UNIQUE IDENTIFIER',
+    custom: {
+      groups: 'beta_testers'
+    }
+  };
+
+  var div = document.createElement('div');
+  document.body.appendChild(div);
+
+  div.appendChild(document.createTextNode('Initializing...'));
+
+  var ldclient = LDClient.initialize('61a41e4198962e0fabedfa02', user);
+
+  function render() {
+    var shouldShow = ldclient.variation('blue-background', false);
+    var label = (shouldShow ? 'Showing' : 'Not showing') + ' your feature to ' + user.key;
+    div.replaceChild(document.createTextNode(label), div.firstChild);
+  }
+
+  ldclient.on('ready', render);
+  ldclient.on('change', render);
+</script>
 </body>
 
 </html>
