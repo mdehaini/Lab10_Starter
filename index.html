@@ -14,6 +14,7 @@
   <!-- Main Stylesheet & Scripts -->
   <link rel="stylesheet" href="assets/styles/global.css" />
   <script src="assets/scripts/partyHorn.js" type="module"></script>
+  <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
 </head>
 
 <body>
@@ -21,7 +22,6 @@
     <nav>
       <a href="speechSynth.html" title="Go to speech synthesizer">Speech Synthesizer</a>
     </nav>
-    <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
   </header>
   <main>
     <section id="expose">
@@ -43,32 +43,29 @@
       <audio class="hidden" src=""></audio>
     </section>
   </main>
+
+
   <script>
-  var user = {
-    firstName: 'Bob',
-    lastName: 'Loblaw',
-    key: 'UNIQUE IDENTIFIER',
-    custom: {
-      groups: 'beta_testers'
+    let rand = ""; 
+    for(let i = 0; i < 5; i++){
+      rand += String.fromCharCode(97 + 25 * Math.random());
     }
-  };
+    var user = {
+      key: rand
+    };
 
-  var div = document.createElement('div');
-  document.body.appendChild(div);
+    var ldclient = LDClient.initialize('61a41e4198962e0fabedfa02', user);
 
-  div.appendChild(document.createTextNode('Initializing...'));
+    function render() {
+      var shouldShow = ldclient.variation('blue-background', false);
+      if (shouldShow)
+        document.querySelector('body').setAttribute('class', 'blue')
 
-  var ldclient = LDClient.initialize('61a41e4198962e0fabedfa02', user);
+    }
 
-  function render() {
-    var shouldShow = ldclient.variation('blue-background', false);
-    var label = (shouldShow ? 'Showing' : 'Not showing') + ' your feature to ' + user.key;
-    div.replaceChild(document.createTextNode(label), div.firstChild);
-  }
-
-  ldclient.on('ready', render);
-  ldclient.on('change', render);
-</script>
+    ldclient.on('ready', render);
+    ldclient.on('change', render);
+  </script>
 </body>
 
 </html>

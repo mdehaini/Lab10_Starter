@@ -10,6 +10,14 @@ body {
   justify-items: center;
 }
 
+.added{
+  background-color: lightblue; 
+  width: 20px; 
+  border-radius: 6px;
+  font-family: 'Oswald';
+  font-size: 24px;
+}
+
 body.blue {
   background-color: lightblue;
 }
@@ -114,3 +122,4 @@ main>section {
   grid-template-areas: 'slider icon';
   grid-template-columns: 80% 15%;
 }
+
